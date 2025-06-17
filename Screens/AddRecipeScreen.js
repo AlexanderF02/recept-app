@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+// Importerar nödvändiga komponenter och hooks från React Native och navigation
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Pressable, SafeAreaView, StatusBar, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'; // Navigation hook
+import AsyncStorage from '@react-native-async-storage/async-storage'; // För lokal lagring av recept
+import { Feather } from '@expo/vector-icons'; // Ikonbibliotek
 
 const screenWidth = Dimensions.get('window').width;
 const isMobile = screenWidth < 500;
 
 export default function AddRecipeScreen() {
+  // State för alla fält i formuläret
   const [title, setTitle] = useState('');
   const [ingredientInput, setIngredientInput] = useState('');
   const [time, setTime] = useState('');
@@ -16,13 +18,17 @@ export default function AddRecipeScreen() {
   const [instructions, setInstructions] = useState('');
   const navigation = useNavigation();
 
+  // Funktion för att spara nytt recept
   const handleSave = async () => {
+    // Kollar att obligatoriska fält är ifyllda
     if (!title.trim() || !ingredientInput.trim() || !instructions.trim()) return;
+    // Delar upp ingredienser på kommatecken och tar bort tomma
     const ingredients = ingredientInput
       .split(',')
       .map(i => i.trim())
       .filter(i => i.length > 0);
 
+    // Skapar nytt recept-objekt
     const newRecipe = {
       id: Date.now().toString(),
       title: title.trim(),
@@ -32,15 +38,18 @@ export default function AddRecipeScreen() {
       imageUrl: imageUrl.trim(),
       instructions: instructions.trim(),
     };
+    // Hämtar befintliga recept från AsyncStorage
     const data = await AsyncStorage.getItem('recipes');
     const current = data ? JSON.parse(data) : [];
+    // Lägger till nya receptet och sparar tillbaka
     const updated = [...current, newRecipe];
     await AsyncStorage.setItem('recipes', JSON.stringify(updated));
-    navigation.goBack();
+    navigation.goBack(); // Går tillbaka till föregående skärm
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      {/* Gör så att tangentbordet inte täcker fälten på mobil */}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -50,8 +59,10 @@ export default function AddRecipeScreen() {
           <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
             <Feather name="arrow-left" size={28} color="#ea580c" />
           </Pressable>
+          {/* Rubrik */}
           <Text style={styles.header}>Lägg till nytt recept</Text>
           <View style={styles.formWrapper}>
+            {/* Fält för receptnamn */}
             <Text style={styles.label}>Receptnamn *</Text>
             <TextInput
               placeholder="T.ex. Klassisk Carbonara"
@@ -60,6 +71,7 @@ export default function AddRecipeScreen() {
               style={styles.input}
               placeholderTextColor="#888"
             />
+            {/* Fält för ingredienser */}
             <Text style={styles.label}>Ingredienser *</Text>
             <TextInput
               placeholder="T.ex. 200g pasta, 1 ägg, 50g bacon"
@@ -68,9 +80,11 @@ export default function AddRecipeScreen() {
               style={styles.input}
               placeholderTextColor="#888"
             />
+            {/* Info om ingrediensformat */}
             <Text style={[styles.infoText, { marginHorizontal: isMobile ? 8 : 32 }]}>
               Skriv alla ingredienser separerade med komma (,)
             </Text>
+            {/* Fält för koktid */}
             <Text style={styles.label}>Koktid (minuter)</Text>
             <TextInput
               placeholder="30"
@@ -80,6 +94,7 @@ export default function AddRecipeScreen() {
               style={styles.input}
               placeholderTextColor="#888"
             />
+            {/* Fält för kategori */}
             <Text style={styles.label}>Kategori</Text>
             <TextInput
               placeholder="T.ex. Huvudrätt"
@@ -88,6 +103,7 @@ export default function AddRecipeScreen() {
               style={styles.input}
               placeholderTextColor="#888"
             />
+            {/* Fält för bild-URL */}
             <Text style={styles.label}>Bild-URL (valfritt)</Text>
             <TextInput
               placeholder="https://example.com/recipe-image.jpg"
@@ -96,6 +112,7 @@ export default function AddRecipeScreen() {
               style={styles.input}
               placeholderTextColor="#888"
             />
+            {/* Fält för instruktioner */}
             <Text style={styles.label}>Instruktioner *</Text>
             <TextInput
               placeholder="Beskriv hur man lagar receptet steg för steg..."
@@ -105,6 +122,7 @@ export default function AddRecipeScreen() {
               placeholderTextColor="#888"
               multiline
             />
+            {/* Spara-knapp */}
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Text style={styles.saveButtonText}>Spara recept</Text>
             </TouchableOpacity>
@@ -115,11 +133,12 @@ export default function AddRecipeScreen() {
   );
 }
 
+// Stilar för komponenten
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#fff7ed',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // Undviker att innehåll hamnar under statusfältet på Android
   },
   container: {
     flex: 1,
@@ -179,7 +198,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     alignItems: 'center',
     marginTop: 8,
-    marginHorizontal: isMobile ? 8 : 32, // Luft på sidorna för knappen
+    marginHorizontal: isMobile ? 8 : 32, 
     shadowColor: '#4f8cff',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,

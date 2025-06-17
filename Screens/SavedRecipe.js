@@ -6,13 +6,16 @@ import RecipeItem from '../components/RecipeItem';
 import { SearchFilters } from '../components/SearchFilters';
 import { Feather } from '@expo/vector-icons';
 
+// Skärm för att visa och filtrera sparade recept
 export default function SavedRecipe() {
+  // State för recept och filterfält
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterIngredient, setFilterIngredient] = useState('');
   const [maxCookingTime, setMaxCookingTime] = useState(null);
   const navigation = useNavigation();
 
+  // Laddar recept när skärmen visas eller när man går tillbaka till den
   useEffect(() => {
     const fetchRecipes = async () => {
       const saved = await loadRecipes();
@@ -23,6 +26,7 @@ export default function SavedRecipe() {
     return unsubscribe;
   }, [navigation]);
 
+  // Filtrerar recepten utifrån titel, ingrediens och koktid
   const filtered = recipes.filter((r) => {
     const titleMatch = r.title?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
     const ingredientMatch =
@@ -38,11 +42,11 @@ export default function SavedRecipe() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        {/* Tillbaka-pil */}
         <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={28} color="#ea580c" />
         </Pressable>
         <Text style={styles.title}>Mina sparade recept</Text>
+        {/* Filterkomponent för sökning och filtrering */}
         <View style={styles.filtersWrapper}>
           <SearchFilters
             searchTerm={searchTerm}
@@ -53,14 +57,17 @@ export default function SavedRecipe() {
             setMaxCookingTime={setMaxCookingTime}
           />
         </View>
+        {/* Lista med filtrerade recept */}
         <FlatList
           data={filtered}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.recipeCard}>
+              {/* Visar varje recept med klickbarhet till detaljsidan */}
               <RecipeItem recipe={item} onPress={() => navigation.navigate('Detaljer', { recipe: item })} />
             </View>
           )}
+          // Visas om det inte finns några sparade recept
           ListEmptyComponent={
             <Text style={styles.emptyText}>Du har inga sparade recept ännu.</Text>
           }
@@ -71,6 +78,7 @@ export default function SavedRecipe() {
   );
 }
 
+// Stilar för komponenten
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

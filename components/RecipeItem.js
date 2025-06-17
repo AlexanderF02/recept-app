@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
+// Komponent som visar ett recept i listan över sparade recept
 export default function RecipeItem({ recipe, onPress }) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -28,6 +29,7 @@ export default function RecipeItem({ recipe, onPress }) {
   );
 }
 
+// Stilar för receptkortet
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

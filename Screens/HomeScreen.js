@@ -3,13 +3,14 @@ import { View, Text, StyleSheet, Pressable, ScrollView, Dimensions, SafeAreaView
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons, Feather, FontAwesome5 } from '@expo/vector-icons';
 
+
 const screenWidth = Dimensions.get('window').width;
 const isMobile = screenWidth < 500;
 
 export default function HomeScreen() {
   const navigation = useNavigation();
 
-  // Card component with hover/press effect (web & mobile)
+  
   const Card = ({ children, style }) => (
     <Pressable
       style={({ hovered, pressed }) => [
@@ -21,7 +22,7 @@ export default function HomeScreen() {
     </Pressable>
   );
 
-  // Button with hover/press effect
+  
   const HoverButton = ({ children, style, textStyle, onPress }) => (
     <Pressable
       onPress={onPress}
@@ -38,21 +39,14 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
-          {/* Tillbaka-pil (visa bara om du vill ha en pil på startsidan, annars ta bort) */}
-          {/* <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Feather name="arrow-left" size={28} color="#ea580c" />
-          </Pressable> */}
-          {/* Emoji and animated circle */}
           <View style={styles.emojiWrapper}>
             <Text style={styles.emoji}>👨‍🍳</Text>
             <View style={styles.emojiPulse} />
           </View>
-          {/* Title and subtitle */}
           <Text style={styles.bigTitle}>Recipe Manager</Text>
           <Text style={styles.introText}>
             Transform your kitchen into a culinary heaven. Organize, discover, and share your favorite recipes with our beautifully designed recipe manager.
           </Text>
-          {/* Feature badges */}
           <View style={styles.badgesRow}>
             <View style={styles.badge}>
               <FontAwesome5 name="star" size={isMobile ? 16 : 22} color="#facc15" solid />
@@ -67,7 +61,6 @@ export default function HomeScreen() {
               <Text style={styles.badgeText}>Chef Approved</Text>
             </View>
           </View>
-          {/* Feature cards with hover effect */}
           <View style={styles.cardsRow}>
             <Card style={[styles.card, styles.narrowCard, { backgroundColor: '#d1fae5' }]}>
               <View style={[styles.cardIcon, { backgroundColor: '#10b981' }]}>
@@ -97,7 +90,6 @@ export default function HomeScreen() {
               </Text>
             </Card>
           </View>
-          {/* Buttons with hover effect */}
           <HoverButton
             style={styles.mainButton}
             textStyle={styles.mainButtonText}
@@ -120,6 +112,7 @@ export default function HomeScreen() {
   );
 }
 
+// Stilar för startsidan och alla komponenter
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

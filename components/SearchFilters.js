@@ -2,13 +2,14 @@ import React from 'react';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 
+// Komponent för att visa och hantera sök- och filterfält för receptlistan
 export const SearchFilters = ({
-  searchTerm,
-  setSearchTerm,
-  filterIngredient,
-  setFilterIngredient,
-  maxCookingTime,
-  setMaxCookingTime
+  searchTerm,           
+  setSearchTerm,        
+  filterIngredient,     
+  setFilterIngredient,  
+  maxCookingTime,       
+  setMaxCookingTime     
 }) => {
   return (
     <View style={styles.container}>
@@ -26,6 +27,7 @@ export const SearchFilters = ({
             onChangeText={setSearchTerm}
           />
         </View>
+        {/* Filter för ingrediens */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Filtrera efter ingrediens</Text>
           <TextInput
@@ -35,6 +37,7 @@ export const SearchFilters = ({
             onChangeText={setFilterIngredient}
           />
         </View>
+        {/* Filter för max koktid */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Max koktid (minuter)</Text>
           <TextInput
@@ -50,6 +53,7 @@ export const SearchFilters = ({
   );
 };
 
+// Stilar för filterkomponenten
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',

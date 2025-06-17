@@ -1,29 +1,30 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Pressable, SafeAreaView, Platform, StatusBar } from 'react-native';
-import { loadRecipes, saveRecipes } from '../utils/RecipeStorage';
-import { useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons';
+import { loadRecipes, saveRecipes } from '../utils/RecipeStorage'; 
+import { useNavigation } from '@react-navigation/native'; 
+import { Feather } from '@expo/vector-icons'; 
 
 export default function RecipeDetailScreen({ route }) {
+  // Hämtar det valda receptet från navigationens route-parametrar
   const { recipe } = route.params;
   const navigation = useNavigation();
 
+  // Funktion för att ta bort receptet
   const handleDelete = async () => {
-    const all = await loadRecipes();
-    const filtered = all.filter(r => r.id !== recipe.id);
-    await saveRecipes(filtered);
-    navigation.goBack();
+    const all = await loadRecipes(); 
+    const filtered = all.filter(r => r.id !== recipe.id); 
+    await saveRecipes(filtered); 
+    navigation.goBack(); 
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        {/* Tillbaka-pil */}
         <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={28} color="#ea580c" />
         </Pressable>
 
-        {/* Bild om den finns */}
+        {/* Visar bild om det finns en bild-URL */}
         {recipe.imageUrl ? (
           <Image
             source={{ uri: recipe.imageUrl }}
@@ -32,10 +33,9 @@ export default function RecipeDetailScreen({ route }) {
           />
         ) : null}
 
-        {/* Titel */}
         <Text style={styles.title}>{recipe.title}</Text>
 
-        {/* Koktid, antal ingredienser, kategori */}
+        {/* Rad med koktid, antal ingredienser och kategori */}
         <View style={styles.quickInfoRow}>
           {recipe.time ? (
             <Text style={styles.quickInfo}>{recipe.time} minuter</Text>
@@ -48,7 +48,7 @@ export default function RecipeDetailScreen({ route }) {
           ) : null}
         </View>
 
-        {/* Ingredienser */}
+        {/* Ingredienslista */}
         <View style={styles.infoBox}>
           <Text style={styles.label}>Ingredienser</Text>
           {Array.isArray(recipe.ingredients) ? (
@@ -66,7 +66,7 @@ export default function RecipeDetailScreen({ route }) {
           <Text style={styles.value}>{recipe.instructions}</Text>
         </View>
 
-        {/* Ta bort-knapp */}
+        {/*knapp för att ta bort receptet */}
         <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
           <Text style={styles.deleteButtonText}>Ta bort recept</Text>
         </TouchableOpacity>
@@ -75,16 +75,16 @@ export default function RecipeDetailScreen({ route }) {
   );
 }
 
+// Stilar för komponenten
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#fff7ed',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, 
   },
   container: {
     padding: 18,
     paddingTop: 0,
-    // alignItems: 'center', // Ta bort för att låta innehållet fylla bredden
   },
   backButton: {
     marginTop: 8,
