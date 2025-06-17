@@ -67,7 +67,6 @@ export default function SavedRecipe() {
               <RecipeItem recipe={item} onPress={() => navigation.navigate('Detaljer', { recipe: item })} />
             </View>
           )}
-          // Visas om det inte finns några sparade recept
           ListEmptyComponent={
             <Text style={styles.emptyText}>Du har inga sparade recept ännu.</Text>
           }
